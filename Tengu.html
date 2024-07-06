@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tengu Wand Locator</title>
+</head>
+<body>
+    <h1>Check the Console for Wand Locator Output</h1>
+    <script>
+        // Mock data representing the storage of each hut
+        const huts = {
+            Hut1: { wand: "Hut5" },
+            Hut2: { wand: "Hut3" },
+            Hut3: { wand: "Hut4" },
+            Hut4: { wand: "Hut2" },
+            Hut5: { wand: "Hut1" },
+        };
+
+        // Cache to store results of anyHut calls
+        let cache = {};
+
+        // Array to store log entries { timestamp, event, data }
+        const locatorLog = [];
+
+        // Function to log events and data
+        function logEvent(event, data) {
+            locatorLog.push({ timestamp: Date.now(), event, data });
+            console.log(`${event}: ${data}`);
+        }
+
+        // Utility function to print the huts and the path
+        function visualizeHuts(huts, path) {
+            console.clear();
+            console.log("-------------------------");
+            console.log("Current State of Huts:");
+            const hutStrings = Object.keys(huts).map((hutId) => {
+                const padding = " ".repeat(6 - hutId.length);
+                return `${hutId}: ${padding} ${huts[hutId].wand}`;
+            });
+            console.log(hutStrings.join("\n"));
+            console.log("\nPath Traversed:", path.join(" -> "));
+            console.log("-------------------------");
+        }
+
+        // Simulate async function to access storage of an arbitrary hut
+        function anyHut(hutId) {
+            return new Promise((resolve, reject) => {
+                // Check the cache first
+                if (cache[hutId]) {
+                    resolve(cache[hutId]);
+                } else {
+                    setTimeout(() => {
+                        if (huts[hutId]) {
+                            // Store the result in the cache
+                            cache[hutId] = huts[hutId];
+                            resolve(huts[hutId]);
+                        } else {
+                            reject(new Error(`Hut with ID ${hutId} not found.`));
+                        }
+                    }, 500); // Simulate async delay
+                }
+            });
+        }
+
+        // Async function to locate the wand with logging and visualization
+        async function locateWand(startingHut, timeout = 10000) {
+            const startTime = Date.now();
+            let currentHut = startingHut;
+            const path = [currentHut];
+            try {
+                while (true) {
+                    logEvent("Checking", currentHut);
+                    const hutStorage = await anyHut(currentHut);
+                    const wandLocation = hutStorage.wand;
+
+                    // Log the current state
+                    logEvent("Wand Location", wandLocation);
+
+                    // Visualize the current state
+                    visualizeHuts(huts, path);
+
+                    // If the wand entry points back to the current hut, we found it.
+                    if (wandLocation === currentHut) {
+                        logEvent("Wand Found", currentHut);
+                        console.log(`The wand is located in Hut ${currentHut}.`);
+                        return { currentHut, path };
+                    }
+
+                    currentHut = wandLocation;
+                    path.push(currentHut);
+
+                    // Check for timeout
+                    if (Date.now() - startTime >= timeout) {
+                        logEvent("Timeout", `Wand location search timed out after ${timeout} milliseconds.`);
+                        throw new Error(`Wand location search timed out after ${timeout} milliseconds.`);
+                    }
+
+                    // Check if the wand location has changed during the search
+                    if (currentHut !== huts[currentHut].wand) {
+                        // If the wand location has changed, start the search again from the current hut
+                        logEvent("Wand Moved", "Restarting search...");
+                        console.log("Wand location changed during the search. Restarting search...");
+                        return locateWand(currentHut, timeout);
+                    }
+                }
+            } catch (error) {
+                logEvent("Error", error.message);
+                console.error(`Error while locating the wand: ${error.message}`);
+                throw error;
+            }
+        }
+
+        // Randomly move the wand to a different hut
+        function moveWand() {
+            const allHutIds = Object.keys(huts);
+            const currentHut = allHutIds.find(hutId => huts[hutId].wand === "Hut1");
+            const newHut = allHutIds[Math.floor(Math.random() * allHutIds.length)];
+            huts[currentHut].wand = newHut;
+            huts[newHut].wand = currentHut;
+
+            // Clear the cache to ensure updated data is used in the next locateWand call
+            cache = {};
+            logEvent("Move Wand", `Wand moved from ${currentHut} to ${newHut}`);
+        }
+
+        // Start the wand location journey from Hut1
+        locateWand("Hut1", 5000)
+            .then((result) => {
+                console.log("Wand location path:", result.path);
+                // Move the wand after finding the location (simulating dynamic changes)
+                moveWand();
+                // Start the search again from the beginning to find the new wand location
+                return locateWand("Hut1", 5000);
+            })
+            .then((result) => {
+                console.log("Wand location path after moveWand:", result.path);
+                console.log("Log:", locatorLog);
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+                console.log("Log:", locatorLog);
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{
+  "map": [
+    ["floor", "wall", "floor", "wall", "floor", "wall", "floor"],
+    ["floor", "floor", "wall", "floor", "door", "floor", "floor"],
+    ["wall", "floor", "monster", "floor", "floor", "floor", "wall"],
+    ["floor", "wall", "floor", "treasure", "floor", "wall", "floor"],
+    ["floor", "floor", "floor", "floor", "floor", "player", "floor"],
+    ["wall", "wall", "wall", "wall", "end", "wall", "wall"]
+  ],
+  "tiles": {
+    "floor": {
+      "symbol": ".",
+      "type": "floor"
+    },
+    "wall": {
+      "symbol": "#",
+      "type": "wall"
+    },
+    "door": {
+      "symbol": "+",
+      "type": "passage"
+    },
+    "monster": {
+      "symbol": "M",
+      "type": "monster"
+    },
+    "treasure": {
+      "symbol": "$",
+      "type": "treasure"
+    },
+    "player": {
+      "symbol": "@",
+      "type": "player"
+    },
+    "end": {
+      "symbol": "E",
+      "type": "exit"
+    }
+  }
+}

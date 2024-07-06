@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pizza Builder</title>
+</head>
+<body>
+    <h2>Pizza Builder</h2>
+    <div>
+        <h3>Select Your Crust:</h3>
+        <select id="crust">
+            <option value="0">-- Choose Crust --</option>
+            <option value="10">Thin Crust</option>
+            <option value="12">Medium Crust</option>
+            <option value="14">Thick Crust</option>
+        </select>
+    </div>
+    <div>
+        <h3>Select Your Cheese:</h3>
+        <select id="cheese">
+            <option value="0">-- Choose Cheese--</option>
+            <option value="5">Mozzarella</option>
+            <option value="7">Cheddar</option>
+            <option value="6">Feta</option>
+        </select>
+    </div>
+    <div>
+        <h3>Select Your Toppings:</h3>
+        <div id="toppings">
+            <input type="checkbox" id="topping1" value="2"> Pepperoni<br>
+            <input type="checkbox" id="topping2" value="3"> Mushrooms<br>
+            <input type="checkbox" id="topping3" value="4"> Onions<br>
+            <input type="checkbox" id="topping4" value="1"> Green Peppers<br>
+            <input type="checkbox" id="topping5"  value="3"> Black Olives<br>
+        </div>
+    </div>
+    <br/>
+    <button onclick="calculatePrice()">Calculate Price</button>
+    <br/>
+    <h3 id="pizzaDescription"></h3>
+    <h3>Total Price: $<span id="totalPrice"></span></h3>
+
+   <script>
+        function calculatePrice() {
+           let crustCost = getPriceByElementId("crust");
+           let cheeseCost = getPriceByElementId("cheese");
+           let toppingsCost = getPriceOfToppings();
+           let total = crustCost + cheeseCost + toppingsCost;     
+           setTotalPrice(total);
+           displayPizzaDescription();
+       }
+       function getPriceByElementId(elementId) { 
+           const element = document.getElementById(elementId); 
+           let selectedValue = element.options[element.selectedIndex].value; 
+           return parseInt(selectedValue);    
+       }
+       function getPriceOfToppings() {
+           let totalToppingsCost = 0;     
+           const toppingsCheckboxes = document.getElementById("toppings").children;
+           for (let i = 0; i < toppingsCheckboxes.length; i++) { 
+            const toppingCheckbox = toppingsCheckboxes[i];        
+            if(toppingCheckbox.checked) {
+                let toppingValue = toppingCheckbox.value;
+                totalToppingsCost += parseInt(toppingValue);
+            }
+           }
+           return totalToppingsCost;
+       } 
+       function setTotalPrice(total) { 
+           const totalPriceElement = document.getElementById("totalPrice"); 
+           totalPriceElement.textContent = total; 
+       } 
+       function displayPizzaDescription() { 
+           const crust = getSelectedTextById("crust"); 
+           const cheese = getSelectedTextById("cheese"); 
+           const toppings = getSelectedToppingsText(); 
+           const pizzaDescriptionElement = document.getElementById("pizzaDescription"); 
+           pizzaDescriptionElement.textContent = `Your Pizza: ${crust} crust with ${cheese} cheese and ${toppings}`; 
+       } 
+       function getSelectedTextById(id) { 
+           const selectElement = document.getElementById(id); 
+           const selectedOption = selectElement.options[selectElement.selectedIndex];   
+           return selectedOption.text; 
+       } 
+       function getSelectedToppingsText() { 
+           const toppingsElement = document.getElementById("toppings"); 
+           const checkedToppings = toppingsElement.querySelectorAll('input[type="checkbox"]:checked'); 
+           let toppingsText = "";    
+           for (let i = 0; i < checkedToppings.length; i++) { 
+            const topping = checkedToppings[i]; 
+            if(i>0) {     
+                toppingsText += ", "; 
+            }
+            toppingsText += topping.nextSibling.textContent; 
+           } 
+           return toppingsText || "No Toppings"; 
+       } 
+   </script> 
+</body>
+</html>  

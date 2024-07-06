@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #square {
+      width: 50px;
+      height: 50px;
+      background: red;
+      position: absolute;
+      top: 50px; /* Adjust this position as per your requirement */
+      left: 0px;
+    }
+  </style>
+</head>
+<body>
+  <div id="square"></div>
+  <script>
+    let square = document.getElementById("square");
+    let position = 0;
+    let speed = 1;
+
+    function moveSquare() {
+      position += speed;
+      square.style.left = position + 'px';
+     if (position >= window.innerWidth) {
+        position = 0;
+      }
+      requestAnimationFrame(moveSquare);
+    }
+    moveSquare();
+  </script>
+</body>
+</html>  

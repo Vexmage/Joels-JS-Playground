@@ -1,0 +1,9 @@
+[
+    ["floor", "wall", "floor", "wall", "floor", "wall", "floor"],
+    ["floor", "floor", "wall", "floor", "door", "floor", "floor"],
+    ["wall", "floor", "monster", "floor", "floor", "floor", "wall"],
+    ["floor", "wall", "floor", "treasure", "floor", "wall", "floor"],
+    ["floor", "floor", "floor", "floor", "floor", "player", "floor"],
+    ["wall", "wall", "wall", "wall", "end", "wall", "wall"]
+]
+  

@@ -1,0 +1,57 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        #square {
+          width: 100px;
+          height: 100px;
+          background: red;
+          position: absolute;
+          top: 50px;
+          left: 0px;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="square"></div>
+    <script>   
+        let square = document.getElementById("square");
+        let position = 0;
+        let speed = 1;
+        let jumpHeight = -100; // Height of the jump
+        let isJumping = false;
+        let originalYPosition = 50; // Store the original y-position
+        let gravity = 0.5; // Gravity acceleration (change this value for slower/faster fall)
+
+        function moveSquare() {
+          if (isJumping) { 
+            updateJump();
+          }
+          position += speed;
+          square.style.left = position + 'px';  
+         if (position >= window.innerWidth - 
+         square.offsetWidth) {  
+            position = 0;
+          }
+          requestAnimationFrame(moveSquare);  
+        } 
+
+function updateJump() {
+  let updatedYPosition = square.offsetTop + jumpHeight;
+  if (updatedYPosition >= originalYPosition) {  // Bug fix: changed "<=" to ">="
+    square.style.top = updatedYPosition + 'px';
+    isJumping = false; // Jump complete
+  } else {
+    jumpHeight += gravity; // Apply gravity
+    square.style.top = updatedYPosition + 'px';
+  }
+}
+          document.addEventListener('keydown', function(event) { 
+            if (event.key === ' ') { 
+              isJumping = true;
+            }
+        });  
+          moveSquare(); 
+      </script>  
+    </body>
+    </html>

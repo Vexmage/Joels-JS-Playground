@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Crawler Map</title>
+    <style>
+        .map {
+            border-collapse: collapse;
+        }
+        .map td {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #000;
+        }
+        .floor {
+            background-color: #ccc;
+        }
+        .wall {
+            background-color: #333;
+        }
+        .door {
+            background-color: #999;
+        }
+        .monster {
+            background-color: red;
+        }
+        .treasure {
+            background-color: gold;
+        }
+        .player {
+            background-color: blue;
+        }
+        .end {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dungeon Crawler Map</h1>
+    <div id="mapContainer"></div>
+    <script src="script.js"></script>
+</body>
+</html>
