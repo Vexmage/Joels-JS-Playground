@@ -29,4 +29,9 @@ class Timer {
   
   const timer = new Timer(); // Create a new Timer instance
   timer.start(); // Start the timer
+
+
+  // To do:
+  // Create a Counter class with methods to start, stop, and reset the counter.
+  // Use both regular and arrow functions to observe the differences in this binding.
   
